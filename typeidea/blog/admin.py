@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from django.contrib.admin.models import LogEntry, CHANGE
+from django.contrib.admin.options import get_content_type_for_model
 
 from .adminforms import PostAdminForm
 from .models import Post, Category, Tag
@@ -54,7 +56,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 
 @admin.register(Post, site=custom_site)
 class PostAdmin(BaseOwnerAdmin):
-    form = PostAdminForm()
+    form = PostAdminForm
     list_display = ['title', 'category', 'status', 'owner', 'created_time', 'operator']
     list_display_links = []
     # list_filter = ['category', ]
@@ -74,7 +76,7 @@ class PostAdmin(BaseOwnerAdmin):
         ('额外信息', {'classes': ('collapse', ), 'fields': ('tag', ), })
     )
     # filter_horizontal = ('tag', )
-    filter_vertical = ('tag', )
+    # filter_vertical = ('tag', )
 
     def operator(self, obj):    # 自定义展示字段
         return format_html(
@@ -90,3 +92,9 @@ class Media:
         'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css",),
     }
     js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
+
+
+#  d
+@admin.register(LogEntry, site=custom_site)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
