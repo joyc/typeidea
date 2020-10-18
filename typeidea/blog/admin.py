@@ -94,7 +94,7 @@ class Media:
     js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
 
 
-#  d
+# 自定义展示管理日志
 @admin.register(LogEntry, site=custom_site)
 class LogEntryAdmin(admin.ModelAdmin):
     list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
