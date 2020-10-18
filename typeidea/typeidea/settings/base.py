@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['10.211.55.4']
 # Application definition
 
 INSTALLED_APPS = [
+    'typeidea',
     'blog',
     'config',
     'comment',
