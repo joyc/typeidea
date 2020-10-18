@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from .models import Post, Category, Tag
+from typeidea.custom_site import custom_site
 
 
 @admin.register(Category)
@@ -45,7 +46,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
         return queryset
 
 
-@admin.register(Post)
+@admin.register(Post, site=custom_site)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'category', 'status', 'owner', 'created_time', 'operator']
     list_display_links = []
@@ -57,13 +58,18 @@ class PostAdmin(admin.ModelAdmin):
 
     # 编辑页面
     # save_on_top = True
-
-    fields = (('category', 'title'), 'desc', 'status', 'content', 'tag', )
+    exclude = ('owner', )
+    # fields = (('category', 'title'), 'desc', 'status', 'content', 'tag', )
+    fieldsets = (
+        ('基础配置', {'description': '基础配置描述', 'fields': (('title', 'category'), 'status', )}),
+        ('内容', {'fields': ('desc', 'content', ), }),
+        ('额外信息', {'classes': ('collapse', ), 'fields': ('tag', ), })
+    )
 
     def operator(self, obj):    # 自定义展示字段
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('admin:blog_post_change', args=(obj.id,))
+            reverse('cus_admin:blog_post_change', args=(obj.id,))
         )
     operator.short_description = '操作'
 
