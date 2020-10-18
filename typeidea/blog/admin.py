@@ -4,6 +4,7 @@ from django.utils.html import format_html
 
 from .models import Post, Category, Tag
 from typeidea.custom_site import custom_site
+from typeidea.base_admin import BaseOwnerAdmin
 
 
 @admin.register(Category)
