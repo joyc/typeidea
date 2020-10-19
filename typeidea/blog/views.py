@@ -12,8 +12,7 @@ def post_list(request, category_id=None, tag_id=None):
     elif category_id:
         post_list, category = Post.get_by_category(category_id)
     else:
-        post_list = Post.objects.filter(status=Post.STATUS_NORMAL) \
-            .select_related('owner', 'category')
+        post_list = Post.latest_posts()
 
     context = {
         'category': category,

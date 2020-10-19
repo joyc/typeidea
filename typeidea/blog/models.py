@@ -21,6 +21,17 @@ class Category(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = '分类'
 
+    @classmethod
+    def get_nav(cls):
+        """获取分类数据"""
+        categories = cls.objects.filter(status=cls.STATUS_NORMAL)
+        nav_categories = categories.filter(is_nav=True)
+        normal_categories = categories.filter(is_nav=False)
+        return {
+            'navs': nav_categories,
+            'categories': normal_categories,
+        }
+
 
 class Tag(models.Model):
     STATUS_NORMAL = 1
@@ -93,3 +104,4 @@ class Post(models.Model):
     @classmethod
     def latest_posts(cls):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        return queryset
